@@ -51,6 +51,7 @@ ExportedObj/
 *.pidb.meta
 *.pdb.meta
 *.mdb.meta
+*.meta
 
 # Unity3D generated file on crash reports
 sysinfo.txt
@@ -70,3 +71,66 @@ crashlytics-build.properties
 # Temporary auto-generated Android Assets
 /[Aa]ssets/[Ss]treamingAssets/aa.meta
 /[Aa]ssets/[Ss]treamingAssets/aa/*
+
+
+ 
+#Visual Studio Code directory
+.vscode/
+#Editor user settings
+/[Uu]serSettings/EditorUserSettings.asset
+
+
+
+
+#///////////////////////////////////////
+*.mat 
+*.anim 
+*.unity 
+*.prefab 
+*.physicsMaterial2D 
+*.physicMaterial 
+*.asset 
+*.meta 
+*.controller 
+
+
+## git-lfs ##
+
+#Image
+*.jpg 
+*.jpeg 
+*.png 
+*.gif 
+*.psd 
+*.ai 
+*.tif 
+
+#Audio
+*.mp3 
+*.wav 
+*.ogg 
+
+#Video
+*.mp4 
+*.mov 
+
+#3D Object
+*.FBX 
+*.fbx 
+*.blend 
+*.obj 
+
+#ETC
+*.a 
+*.exr 
+*.tga 
+*.pdf 
+*.zip 
+*.dll 
+*.unitypackage 
+*.aif 
+*.ttf 
+*.rns 
+*.reason 
+*.lxo 
+*.terrainLayer
