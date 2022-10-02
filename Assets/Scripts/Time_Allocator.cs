@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using static Time_Allocator;
 
 public class Time_Allocator : MonoBehaviour
 {
@@ -9,14 +10,25 @@ public class Time_Allocator : MonoBehaviour
     [SerializeField] const int MinFPS = 50;
 
 
-    public enum Actions
+    Queue<System.Action> requestedTasks = new Queue<System.Action>();
+
+
+    public void AddTask(System.Action task)
     {
-        NPC_Pathfinding,
-        NPC_Tasks,
-        World_Loading_Unloading
+        requestedTasks.Enqueue(task);
     }
 
-    Dictionary<Actions, List<System.Action>> requestedActions = new Dictionary<Actions, List<System.Action>>();
+    public void AddTaskRange(List<System.Action> taskRange)
+    {
+        foreach (System.Action act in taskRange)
+        {
+            AddTask(act);
+        }
+    }
+
+
+
+
 
 
     float targetTime;
@@ -35,24 +47,24 @@ public class Time_Allocator : MonoBehaviour
     public void LateUpdate()
     {
         //time left before fps drops below 60
-        float leftOverTime = (1000 / TargetFPS) - (((Time.realtimeSinceStartup) - timeLast) * 1000);
+        float leftOverTime = (1000 / MinFPS) - (((Time.realtimeSinceStartup) - timeLast) * 1000);
         timeLast = Time.realtimeSinceStartup;
         Debug.Log(leftOverTime);
 
-        while (leftOverTime > 0 && requestedActions.Count > 0)
+
+
+
+        while (leftOverTime > 0 && requestedTasks.Count > 0)
         {
             float startTime = Time.realtimeSinceStartup;
 
             //handle Actions
 
+            requestedTasks.Dequeue().Invoke();
 
             //end handle Actions
 
             leftOverTime -= (Time.realtimeSinceStartup - startTime) * 1000;
-            if (leftOverTime <= 0)
-            {
-                leftOverTime += targetTime - minTime;
-            }
         }
     }
 }
