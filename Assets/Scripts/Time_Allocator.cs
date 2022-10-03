@@ -12,6 +12,21 @@ public class Time_Allocator : MonoBehaviour
 
     Queue<System.Action> highPriorityTask = new Queue<System.Action>();
     Queue<System.Action> mediumPriorityTask = new Queue<System.Action>();
+    Queue<System.Action> lowPriorityTask = new Queue<System.Action>();
+
+
+    public void LowAddTask(System.Action task)
+    {
+        mediumPriorityTask.Enqueue(task);
+    }
+
+    public void LowAddTaskRange(List<System.Action> taskRange)
+    {
+        foreach (System.Action act in taskRange)
+        {
+            LowAddTask(act);
+        }
+    }
 
 
     public void MediumAddTask(System.Action task)
@@ -77,9 +92,13 @@ public class Time_Allocator : MonoBehaviour
             {
                 highPriorityTask.Dequeue().Invoke();
             }
-            else
+            else if (mediumPriorityTask.Count > 0)
             {
                 mediumPriorityTask.Dequeue().Invoke();
+            }
+            else if (lowPriorityTask.Count > 0)
+            {
+                lowPriorityTask.Dequeue().Invoke();
             }
 
             //end handle Actions
