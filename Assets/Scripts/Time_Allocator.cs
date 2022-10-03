@@ -10,19 +10,32 @@ public class Time_Allocator : MonoBehaviour
     [SerializeField] const int MinFPS = 50;
 
 
-    Queue<System.Action> requestedTasks = new Queue<System.Action>();
+    Queue<System.Action> highPriorityTask = new Queue<System.Action>();
+    Queue<System.Action> mediumPriorityTask = new Queue<System.Action>();
 
 
-    public void AddTask(System.Action task)
+    public void MediumAddTask(System.Action task)
     {
-        requestedTasks.Enqueue(task);
+        mediumPriorityTask.Enqueue(task);
     }
 
-    public void AddTaskRange(List<System.Action> taskRange)
+    public void MediumAddTaskRange(List<System.Action> taskRange)
     {
         foreach (System.Action act in taskRange)
         {
-            AddTask(act);
+            MediumAddTask(act);
+        }
+    }
+    public void HighPriorityAddTask(System.Action task)
+    {
+        highPriorityTask.Enqueue(task);
+    }
+
+    public void HighPriorityAddTaskRange(List<System.Action> taskRange)
+    {
+        foreach (System.Action act in taskRange)
+        {
+            HighPriorityAddTask (act);
         }
     }
 
@@ -54,13 +67,20 @@ public class Time_Allocator : MonoBehaviour
 
 
 
-        while (leftOverTime > 0 && requestedTasks.Count > 0)
+        while (leftOverTime > 0 && (mediumPriorityTask.Count > 0 || highPriorityTask.Count > 0))
         {
             float startTime = Time.realtimeSinceStartup;
 
             //handle Actions
 
-            requestedTasks.Dequeue().Invoke();
+            if (highPriorityTask.Count > 0)
+            {
+                highPriorityTask.Dequeue().Invoke();
+            }
+            else
+            {
+                mediumPriorityTask.Dequeue().Invoke();
+            }
 
             //end handle Actions
 
