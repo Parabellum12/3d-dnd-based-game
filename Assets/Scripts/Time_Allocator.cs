@@ -41,6 +41,8 @@ public class Time_Allocator : MonoBehaviour
             MediumAddTask(act);
         }
     }
+
+
     public void HighPriorityAddTask(System.Action task)
     {
         highPriorityTask.Enqueue(task);
@@ -82,7 +84,7 @@ public class Time_Allocator : MonoBehaviour
 
 
 
-        while (leftOverTime > 0 && (mediumPriorityTask.Count > 0 || highPriorityTask.Count > 0))
+        while (leftOverTime > 0 && (mediumPriorityTask.Count > 0 || highPriorityTask.Count > 0 || lowPriorityTask.Count > 0))
         {
             float startTime = Time.realtimeSinceStartup;
 
